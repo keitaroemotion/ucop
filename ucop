@@ -4,6 +4,8 @@ import re
 import ssl
 import sys
 import urllib.request
+import pyperclip
+
 
 options  = [x for x in sys.argv if re.search(r'^-',     x)]
 args     = [x for x in sys.argv if re.search(r'^[^-]+', x)]
@@ -39,6 +41,7 @@ print("[url: %s]\n" % url)
 page = urllib.request.urlopen(url, context=ssl.SSLContext())
 
 def extract_content(page, tag, query):
+    content = []
     for x in filter(
                  lambda a: (a != "") and re.search(query, a),
                  map(
@@ -52,8 +55,14 @@ def extract_content(page, tag, query):
                      re.findall(r'<%s\s*[^<>]*>[^<>]+</%s>' % (tag, tag), str(page.read()))
                  )
               ):
-        print(x.replace('\n', ""))
+        content.append(x.replace('\n', ""))
+    return content
 
 for option in filter(lambda x: x.startswith("--"), options):
     tag = option.replace("--", "")
-    extract_content(page, tag, query)
+    content = "\n".join(extract_content(page, tag, query))
+    print("using pyperclip...")
+    print("using pyperclip...")
+    print("using pyperclip...")
+    pyperclip.copy(content)
+    pyperclip.paste()
