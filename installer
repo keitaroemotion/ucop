@@ -6,3 +6,4 @@ if [ -z $(which pip3) ]; then
 fi
 
 pip3 install pyperclip
+cp ucop /usr/local/bin
