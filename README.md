@@ -14,6 +14,7 @@ Copy the content of the web page on your clipboard!
 ucop --[tag] [http(s)://...]             ... enlist and copy the content of the web on clipboard
 ucop --[tag] [http(s)://...] [key words] ... copy the filtered content on clipboard.
 ucop -h                                  ... show help menu
+ucop --screen [http(s)://...]            ... capture screen on the web 
 ```
 
 ## Author
