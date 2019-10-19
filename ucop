@@ -6,6 +6,23 @@ import sys
 import urllib.request
 import pyperclip
 
+def capture_screenshot(url):
+    from selenium import webdriver
+    file_name = "%s.png" % (
+                    url
+                        .replace("http://", "")
+                        .replace("https://", "")[0:10]
+                )
+    DRIVER     = 'chromedriver'
+    driver     = webdriver.Chrome(DRIVER)
+    driver.get(url)
+    driver \
+        .save_screenshot(
+            file_name        
+        )
+    driver.quit()
+    pyperclip.copy(file_name)
+    pyperclip.paste()
 
 options  = [x for x in sys.argv if re.search(r'^-',     x)]
 args     = [x for x in sys.argv if re.search(r'^[^-]+', x)]
@@ -18,6 +35,7 @@ if (len(args) < 2) or ("-h" in options) or ("help" in options):
                                                        "web on clipboard.")
     print("ucop --[tag] [http(s)://...] [key words] ... copy the filtered content on clipboard.")
     print("ucop -h                                  ... show help menu")
+    print("ucop --screen [http(s)://...]            ... capture screen shot")
     print("")
     sys.exit()
 
@@ -30,6 +48,10 @@ if len(urls) == 0:
 url = urls[0]
 
 print("[url: %s]\n" % url)
+
+if ("--screen" in options):
+    capture_screenshot(url)
+
 page = urllib.request.urlopen(url, context=ssl.SSLContext())
 
 def extract_content(page, tag, query):
@@ -53,8 +75,5 @@ def extract_content(page, tag, query):
 for option in filter(lambda x: x.startswith("--"), options):
     tag = option.replace("--", "")
     content = "\n".join(extract_content(page, tag, query))
-    print("using pyperclip...")
-    print("using pyperclip...")
-    print("using pyperclip...")
     pyperclip.copy(content)
     pyperclip.paste()
